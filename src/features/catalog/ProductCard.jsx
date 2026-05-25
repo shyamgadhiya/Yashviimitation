@@ -4,7 +4,12 @@ import { WaIcon } from "../../components/icons/index.jsx";
 export default function ProductCard({ product, delay = 0 }) {
   const slug = product.categories?.slug || "default";
   const icon = CAT_ICONS[slug] || CAT_ICONS.default;
-  const waMsg = encodeURIComponent(`Hi! I am interested in "${product.name}" priced at ₹${product.price}. Is it available?`);
+  const waLines = [
+    `Hi! I am interested in "${product.name}" priced at ₹${product.price}. Is it available?`,
+    product.categories?.name ? `Category: ${product.categories.name}` : null,
+    product.image_url ? `Photo: ${product.image_url}` : null,
+  ].filter(Boolean);
+  const waMsg = encodeURIComponent(waLines.join("\n"));
 
   return (
     <div
