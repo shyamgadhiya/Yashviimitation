@@ -37,12 +37,12 @@ export default function CollectionPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", paddingTop: 68 }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 1.5rem" }}>
-        <div style={{ padding: "48px 0 32px", borderBottom: "1px solid var(--border)", marginBottom: 32 }}>
+      <div className="page-shell" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 1.5rem" }}>
+        <div className="collection-header" style={{ padding: "48px 0 32px", borderBottom: "1px solid var(--border)", marginBottom: 32 }}>
           <p style={{ fontSize: 11, letterSpacing: ".22em", color: "var(--pink)", textTransform: "uppercase", marginBottom: 8, fontFamily: "'DM Sans',sans-serif" }}>✦ Browse</p>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
             <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 48, fontWeight: 600, color: "var(--text)" }}>Our Collection</h1>
-            <div style={{ position: "relative" }}>
+            <div className="collection-search-wrap" style={{ position: "relative" }}>
               <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }}>
                 <SearchIcon />
               </span>
@@ -51,7 +51,7 @@ export default function CollectionPage() {
                 placeholder="Search designs…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="fi"
+                className="fi collection-search-input"
                 style={{
                   paddingLeft: 36,
                   paddingRight: 16,
