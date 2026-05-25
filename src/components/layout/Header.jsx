@@ -34,6 +34,7 @@ export default function Header({ page, setPage }) {
     <>
       <header style={hStyle}>
         <div
+          className="header-inner"
           style={{
             maxWidth: 1280,
             margin: "0 auto",
@@ -46,12 +47,14 @@ export default function Header({ page, setPage }) {
           }}
         >
           <button
+            className="header-brand"
             onClick={() => setPage("home")}
             style={{ display: "flex", alignItems: "center", gap: 12, background: "none", border: "none", cursor: "pointer" }}
           >
-            <img src={LOGO} alt="Yashvi Imitation" style={{ width: 46, height: 46, objectFit: "contain", display: "block" }} />
-            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
+            <img className="header-logo" src={LOGO} alt="Yashvi Imitation" style={{ width: 46, height: 46, objectFit: "contain", display: "block" }} />
+            <div className="brand-copy" style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
               <span
+                className="brand-title"
                 style={{
                   fontFamily: "'Playfair Display',serif",
                   fontSize: 17,
@@ -62,13 +65,13 @@ export default function Header({ page, setPage }) {
               >
                 Yashvi Imitation
               </span>
-              <span style={{ fontSize: 9.5, letterSpacing: ".18em", color: "var(--pink)", textTransform: "uppercase" }}>
+              <span className="brand-tagline" style={{ fontSize: 9.5, letterSpacing: ".18em", color: "var(--pink)", textTransform: "uppercase" }}>
                 House of Antique Jewellery
               </span>
             </div>
           </button>
 
-          <nav style={{ display: "flex", gap: 32, alignItems: "center" }}>
+          <nav className="desktop-nav" style={{ display: "flex", gap: 32, alignItems: "center" }}>
             {nav.map((item) => (
               <button
                 key={item.k}
@@ -90,8 +93,9 @@ export default function Header({ page, setPage }) {
             ))}
           </nav>
 
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div className="header-actions" style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <a
+              className="header-social"
               href={IG}
               target="_blank"
               rel="noopener"
@@ -109,6 +113,7 @@ export default function Header({ page, setPage }) {
               </span>
             </a>
             <a
+              className="header-whatsapp"
               href={`https://wa.me/${WA}?text=Hi! I would like to enquire about your jewellery.`}
               target="_blank"
               rel="noopener"
@@ -131,16 +136,16 @@ export default function Header({ page, setPage }) {
               <span className="sm-inline">WhatsApp</span>
             </a>
             {page === "admin" ? (
-              <button onClick={() => setPage("home")} className="btn-outline" style={{ borderRadius: 999, padding: "6px 14px", fontSize: 12, letterSpacing: ".06em" }}>
+              <button onClick={() => setPage("home")} className="btn-outline header-admin" style={{ borderRadius: 999, padding: "6px 14px", fontSize: 12, letterSpacing: ".06em" }}>
                 ← Store
               </button>
             ) : (
-              <button onClick={() => setPage("admin")} className="btn-outline" style={{ borderRadius: 999, padding: "6px 14px", fontSize: 12, letterSpacing: ".06em" }}>
+              <button onClick={() => setPage("admin")} className="btn-outline header-admin" style={{ borderRadius: 999, padding: "6px 14px", fontSize: 12, letterSpacing: ".06em" }}>
                 ⚙ Admin
               </button>
             )}
             <button
-              className="btn-outline"
+              className="btn-outline menu-toggle"
               style={{ borderRadius: 999, padding: "6px 8px", display: "flex", alignItems: "center", justifyContent: "center" }}
               onClick={() => setOpen((value) => !value)}
             >
@@ -149,7 +154,7 @@ export default function Header({ page, setPage }) {
           </div>
         </div>
         {open && (
-          <div style={{ background: "var(--bg-card)", borderTop: "1px solid var(--border)", animation: "slideDown .25s ease both" }}>
+          <div className="mobile-menu-panel" style={{ background: "var(--bg-card)", borderTop: "1px solid var(--border)", animation: "slideDown .25s ease both" }}>
             {nav.map((item) => (
               <button
                 key={item.k}
@@ -177,6 +182,24 @@ export default function Header({ page, setPage }) {
               </button>
             ))}
             <a
+              href={`https://wa.me/${WA}?text=Hi! I would like to enquire about your jewellery.`}
+              target="_blank"
+              rel="noopener"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "14px 24px",
+                fontFamily: "'DM Sans',sans-serif",
+                fontSize: 13,
+                color: "var(--text-muted)",
+                borderBottom: "1px solid var(--border-soft)",
+              }}
+              onClick={() => setOpen(false)}
+            >
+              <WaIcon /> WhatsApp
+            </a>
+            <a
               href={IG}
               target="_blank"
               rel="noopener"
@@ -190,9 +213,57 @@ export default function Header({ page, setPage }) {
                 color: "var(--text-muted)",
                 borderBottom: "1px solid var(--border-soft)",
               }}
+              onClick={() => setOpen(false)}
             >
               <IgIcon /> @yashvi_imitation_
             </a>
+            {page === "admin" ? (
+              <button
+                onClick={() => {
+                  setPage("home");
+                  setOpen(false);
+                }}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  padding: "14px 24px",
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: 13,
+                  letterSpacing: ".1em",
+                  textTransform: "uppercase",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "var(--text-muted)",
+                }}
+              >
+                ← Store
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setPage("admin");
+                  setOpen(false);
+                }}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  padding: "14px 24px",
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: 13,
+                  letterSpacing: ".1em",
+                  textTransform: "uppercase",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "var(--text-muted)",
+                }}
+              >
+                ⚙ Admin
+              </button>
+            )}
           </div>
         )}
       </header>
