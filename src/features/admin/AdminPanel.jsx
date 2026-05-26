@@ -216,7 +216,7 @@ export default function AdminPanel({ onLogout, adminEmail }) {
     <div style={{ minHeight: "100vh", background: "var(--bg)", paddingTop: 68, paddingBottom: 60 }}>
       <Toast toast={toast} />
       {editItem && <EditModal product={editItem} cats={cats} onClose={() => setEditItem(null)} onSaved={() => { setEditItem(null); load(); }} show={show} />}
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 1.5rem" }}>
+      <div className="admin-shell" style={{ maxWidth: 1100, margin: "0 auto", padding: "0 1.5rem" }}>
         <div style={{ padding: "36px 0 24px", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 28 }}>
           <div>
             <p style={{ fontSize: 11, letterSpacing: ".22em", color: "var(--pink)", textTransform: "uppercase", marginBottom: 4, fontFamily: "'DM Sans',sans-serif" }}>✦ Management</p>
@@ -230,7 +230,7 @@ export default function AdminPanel({ onLogout, adminEmail }) {
 
         {loadError && <div style={{ background: "#fff7ed", border: "1px solid #fdba74", color: "#9a3412", fontSize: 13, padding: "12px 14px", borderRadius: 10, marginBottom: 20, fontFamily: "'DM Sans',sans-serif" }}>{loadError}</div>}
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 28 }}>
+        <div className="admin-stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 28 }}>
           {stats.map((stat) => (
             <div key={stat.l} style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 12, padding: "18px 20px", boxShadow: "var(--shadow-card)" }}>
               <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 36, fontWeight: 400, color: "var(--pink)", lineHeight: 1 }}>{stat.n}</div>
@@ -239,7 +239,7 @@ export default function AdminPanel({ onLogout, adminEmail }) {
           ))}
         </div>
 
-        <div style={{ display: "flex", gap: 0, borderBottom: "1px solid var(--border)", marginBottom: 28 }}>
+        <div className="admin-tabs" style={{ display: "flex", gap: 0, borderBottom: "1px solid var(--border)", marginBottom: 28 }}>
           {TABS.map((item) => (
             <button
               key={item.k}
@@ -266,7 +266,7 @@ export default function AdminPanel({ onLogout, adminEmail }) {
         {tab === "add" && (
           <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, boxShadow: "var(--shadow-card)" }}>
             <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, color: "var(--text)", marginBottom: 20, paddingBottom: 16, borderBottom: "1px solid var(--border-soft)" }}>✦ Add New Product</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+            <div className="admin-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
               <div style={{ gridColumn: "1/-1" }}>
                 <label style={{ display: "block", fontSize: 10, letterSpacing: ".12em", color: "var(--text-muted)", textTransform: "uppercase", marginBottom: 8, fontFamily: "'DM Sans',sans-serif" }}>Product Photo</label>
                 <div
@@ -338,14 +338,14 @@ export default function AdminPanel({ onLogout, adminEmail }) {
                 </select>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 14, justifyContent: "center" }}>
+              <div className="admin-toggle-grid" style={{ display: "flex", flexDirection: "column", gap: 14, justifyContent: "center" }}>
                 <Toggle checked={form.is_new} onChange={(value) => updateField("is_new", value)} label="New Arrival" />
                 <Toggle checked={form.is_featured} onChange={(value) => updateField("is_featured", value)} label="Featured on Homepage" />
                 <Toggle checked={form.is_sold_out} onChange={(value) => updateField("is_sold_out", value)} label="Mark as Sold Out" />
               </div>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--border-soft)" }}>
+            <div className="admin-form-actions" style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--border-soft)" }}>
               <button onClick={reset} className="btn-outline" style={{ padding: "9px 20px", fontSize: 12, letterSpacing: ".06em", borderRadius: 8 }}>
                 Reset
               </button>
@@ -359,7 +359,7 @@ export default function AdminPanel({ onLogout, adminEmail }) {
 
         {tab === "products" && (
           <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 14, overflow: "hidden", boxShadow: "var(--shadow-card)" }}>
-            <div style={{ padding: "14px 22px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="admin-list-header" style={{ padding: "14px 22px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ fontFamily: "'Playfair Display',serif", fontSize: 20, color: "var(--text)" }}>All Products</span>
               <span style={{ fontSize: 11, color: "var(--text-muted)", letterSpacing: ".1em", textTransform: "uppercase", fontFamily: "'DM Sans',sans-serif" }}>{products.length} items</span>
             </div>
@@ -381,6 +381,7 @@ export default function AdminPanel({ onLogout, adminEmail }) {
                   const slug = product.categories?.slug || "default";
                   return (
                     <div
+                      className="admin-product-row"
                       key={product.id}
                       style={{ display: "flex", alignItems: "center", gap: 14, padding: "13px 22px", borderBottom: "1px solid var(--border-soft)", transition: "background .15s" }}
                       onMouseEnter={(e) => {
@@ -390,11 +391,11 @@ export default function AdminPanel({ onLogout, adminEmail }) {
                         e.currentTarget.style.background = "transparent";
                       }}
                     >
-                      <div style={{ width: 52, height: 52, flexShrink: 0, borderRadius: 8, overflow: "hidden", background: "var(--bg-mid)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>
+                      <div className="admin-product-thumb" style={{ width: 52, height: 52, flexShrink: 0, borderRadius: 8, overflow: "hidden", background: "var(--bg-mid)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>
                         {product.image_url ? <img src={product.image_url} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : CAT_ICONS[slug] || "💎"}
                       </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 14, fontWeight: 500, color: "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontFamily: "'DM Sans',sans-serif" }}>{product.name}</div>
+                      <div className="admin-product-meta" style={{ flex: 1, minWidth: 0 }}>
+                        <div className="admin-product-name" style={{ fontSize: 14, fontWeight: 500, color: "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontFamily: "'DM Sans',sans-serif" }}>{product.name}</div>
                         <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2, fontFamily: "'DM Sans',sans-serif" }}>
                           {product.categories?.name}
                           {product.is_new ? " · 🆕" : ""}
@@ -402,18 +403,22 @@ export default function AdminPanel({ onLogout, adminEmail }) {
                           {product.is_sold_out ? " · 🔴 Sold" : ""}
                         </div>
                       </div>
-                      <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 17, color: "var(--text-mid)", whiteSpace: "nowrap" }}>
-                        ₹{Number(product.price).toLocaleString("en-IN")}
+                      <div className="admin-product-secondary" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                        <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 17, color: "var(--text-mid)", whiteSpace: "nowrap" }}>
+                          ₹{Number(product.price).toLocaleString("en-IN")}
+                        </div>
+                        <span style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", padding: "3px 10px", borderRadius: 4, fontFamily: "'DM Sans',sans-serif", background: product.is_sold_out ? "#fef2f2" : "#f0fdf4", color: product.is_sold_out ? "#b91c1c" : "#15803d", border: `1px solid ${product.is_sold_out ? "#fecaca" : "#bbf7d0"}` }}>
+                          {product.is_sold_out ? "Sold" : "Avail."}
+                        </span>
+                        <div className="admin-product-actions" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <button onClick={() => setEditItem(product)} className="btn-edit" style={{ padding: "6px 14px", fontSize: 11, letterSpacing: ".04em", borderRadius: 6, whiteSpace: "nowrap" }}>
+                            ✏ Edit
+                          </button>
+                          <button onClick={() => del(product.id, product.name)} disabled={deleting === product.id} className="btn-danger" style={{ padding: "6px 12px", fontSize: 11, borderRadius: 6, whiteSpace: "nowrap", opacity: deleting === product.id ? 0.5 : 1 }}>
+                            {deleting === product.id ? <Spinner sm /> : "🗑"}
+                          </button>
+                        </div>
                       </div>
-                      <span style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", padding: "3px 10px", borderRadius: 4, fontFamily: "'DM Sans',sans-serif", background: product.is_sold_out ? "#fef2f2" : "#f0fdf4", color: product.is_sold_out ? "#b91c1c" : "#15803d", border: `1px solid ${product.is_sold_out ? "#fecaca" : "#bbf7d0"}` }}>
-                        {product.is_sold_out ? "Sold" : "Avail."}
-                      </span>
-                      <button onClick={() => setEditItem(product)} className="btn-edit" style={{ padding: "6px 14px", fontSize: 11, letterSpacing: ".04em", borderRadius: 6, whiteSpace: "nowrap" }}>
-                        ✏ Edit
-                      </button>
-                      <button onClick={() => del(product.id, product.name)} disabled={deleting === product.id} className="btn-danger" style={{ padding: "6px 12px", fontSize: 11, borderRadius: 6, whiteSpace: "nowrap", opacity: deleting === product.id ? 0.5 : 1 }}>
-                        {deleting === product.id ? <Spinner sm /> : "🗑"}
-                      </button>
                     </div>
                   );
                 })}
@@ -426,7 +431,7 @@ export default function AdminPanel({ onLogout, adminEmail }) {
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, boxShadow: "var(--shadow-card)" }}>
               <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, color: "var(--text)", marginBottom: 20, paddingBottom: 16, borderBottom: "1px solid var(--border-soft)" }}>✦ Add New Category</h2>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 18 }}>
+              <div className="admin-category-form" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 18 }}>
                 <div>
                   <label style={{ display: "block", fontSize: 10, letterSpacing: ".12em", color: "var(--text-muted)", textTransform: "uppercase", marginBottom: 8, fontFamily: "'DM Sans',sans-serif" }}>Category Name *</label>
                   <input
@@ -458,7 +463,7 @@ export default function AdminPanel({ onLogout, adminEmail }) {
             </div>
 
             <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 14, overflow: "hidden", boxShadow: "var(--shadow-card)" }}>
-              <div style={{ padding: "14px 22px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div className="admin-list-header" style={{ padding: "14px 22px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontFamily: "'Playfair Display',serif", fontSize: 20, color: "var(--text)" }}>All Categories</span>
                 <span style={{ fontSize: 11, color: "var(--text-muted)", letterSpacing: ".1em", textTransform: "uppercase", fontFamily: "'DM Sans',sans-serif" }}>{cats.length} categories</span>
               </div>
@@ -474,6 +479,7 @@ export default function AdminPanel({ onLogout, adminEmail }) {
                     const cnt = products.filter((product) => product.category_id === category.id).length;
                     return (
                       <div
+                        className="admin-category-row"
                         key={category.id}
                         style={{ display: "flex", alignItems: "center", gap: 14, padding: "13px 22px", borderBottom: "1px solid var(--border-soft)", transition: "background .15s" }}
                         onMouseEnter={(e) => {

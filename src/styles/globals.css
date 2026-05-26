@@ -515,6 +515,71 @@ html.dark .btn-danger:hover {
   .product-page-grid {
     grid-template-columns: 1fr !important;
   }
+
+  .admin-shell {
+    padding: 0 1rem !important;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .admin-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .admin-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-tabs > * {
+    flex-shrink: 0;
+  }
+
+  .admin-form-grid,
+  .admin-category-form {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch !important;
+  }
+
+  .admin-form-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-list-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 6px;
+  }
+
+  .admin-product-row,
+  .admin-category-row {
+    flex-wrap: wrap;
+    align-items: flex-start !important;
+    padding: 14px 16px !important;
+  }
+
+  .admin-product-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .admin-product-secondary {
+    width: 100%;
+    justify-content: space-between !important;
+    padding-left: 66px;
+  }
+
+  .admin-product-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
 }
 
 @media (max-width: 640px) {
@@ -562,5 +627,33 @@ html.dark .btn-danger:hover {
 
   .mobile-lead-bar {
     display: grid;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-product-row,
+  .admin-category-row {
+    gap: 10px !important;
+  }
+
+  .admin-product-name {
+    white-space: normal !important;
+  }
+
+  .admin-product-secondary {
+    padding-left: 0;
+    align-items: flex-start !important;
+    flex-direction: column;
+  }
+
+  .admin-product-actions {
+    width: 100%;
+  }
+
+  .admin-product-actions > * {
+    flex: 1;
+    justify-content: center;
   }
 }
