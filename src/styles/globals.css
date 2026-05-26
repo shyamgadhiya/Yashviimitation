@@ -580,6 +580,36 @@ html.dark .btn-danger:hover {
     flex-wrap: wrap;
     justify-content: flex-end;
   }
+
+  .edit-modal-box {
+    max-height: calc(100vh - 1.5rem) !important;
+  }
+
+  .edit-modal-header {
+    padding: 14px 18px !important;
+  }
+
+  .edit-modal-body {
+    padding: 18px !important;
+  }
+
+  .edit-modal-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .edit-modal-toggles {
+    grid-template-columns: 1fr !important;
+  }
+
+  .edit-modal-actions {
+    flex-direction: column-reverse;
+    align-items: stretch !important;
+  }
+
+  .edit-modal-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 640px) {
@@ -655,5 +685,27 @@ html.dark .btn-danger:hover {
   .admin-product-actions > * {
     flex: 1;
     justify-content: center;
+  }
+
+  .modal-ov {
+    align-items: flex-end;
+    padding: 0.5rem;
+  }
+
+  .edit-modal-box {
+    max-height: calc(100vh - 1rem) !important;
+  }
+
+  .edit-modal-header {
+    padding: 12px 14px !important;
+  }
+
+  .edit-modal-body {
+    padding: 14px !important;
+    gap: 14px !important;
+  }
+
+  .edit-modal-actions {
+    padding: 12px 14px !important;
   }
 }

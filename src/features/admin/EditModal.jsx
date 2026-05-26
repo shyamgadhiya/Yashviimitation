@@ -92,8 +92,9 @@ export default function EditModal({ product, cats, onClose, onSaved, show: toast
 
   return (
     <div className="modal-ov" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="modal-box animate-fade-up" style={{ borderRadius: 14 }}>
+      <div className="modal-box edit-modal-box animate-fade-up" style={{ borderRadius: 14 }}>
         <div
+          className="edit-modal-header"
           style={{
             display: "flex",
             alignItems: "center",
@@ -112,7 +113,7 @@ export default function EditModal({ product, cats, onClose, onSaved, show: toast
             ✕
           </button>
         </div>
-        <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 16 }}>
+        <div className="edit-modal-body" style={{ padding: 24, display: "flex", flexDirection: "column", gap: 16 }}>
           <div>
             <label style={{ display: "block", fontSize: 10, letterSpacing: ".12em", color: "var(--text-muted)", textTransform: "uppercase", marginBottom: 8, fontFamily: "'DM Sans',sans-serif" }}>
               Photo
@@ -174,7 +175,7 @@ export default function EditModal({ product, cats, onClose, onSaved, show: toast
             <textarea className="fi" rows={2} value={form.description} onChange={(e) => updateField("description", e.target.value)} style={{ ...inp, resize: "none" }} />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div className="edit-modal-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             <div>
               <label style={{ display: "block", fontSize: 10, letterSpacing: ".12em", color: "var(--text-muted)", textTransform: "uppercase", marginBottom: 8, fontFamily: "'DM Sans',sans-serif" }}>
                 Price (₹) *
@@ -206,13 +207,13 @@ export default function EditModal({ product, cats, onClose, onSaved, show: toast
             </select>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, paddingTop: 4 }}>
+          <div className="edit-modal-toggles" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, paddingTop: 4 }}>
             <Toggle checked={form.is_new} onChange={(value) => updateField("is_new", value)} label="New Arrival" />
             <Toggle checked={form.is_featured} onChange={(value) => updateField("is_featured", value)} label="Featured" />
             <Toggle checked={form.is_sold_out} onChange={(value) => updateField("is_sold_out", value)} label="Sold Out" />
           </div>
         </div>
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, padding: "14px 22px", borderTop: "1px solid var(--border)" }}>
+        <div className="edit-modal-actions" style={{ display: "flex", justifyContent: "flex-end", gap: 10, padding: "14px 22px", borderTop: "1px solid var(--border)" }}>
           <button onClick={onClose} className="btn-outline" style={{ padding: "9px 20px", fontSize: 12, letterSpacing: ".06em", borderRadius: 6 }}>
             Cancel
           </button>
