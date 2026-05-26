@@ -1,7 +1,10 @@
-import { IG, LOGO, WA } from "../../lib/config.js";
+import { Link } from "react-router-dom";
+import { IG, LOGO } from "../../lib/config.js";
 import { ChevronRight, IgIcon, WaIcon } from "../../components/icons/index.jsx";
+import { trackLead } from "../../lib/analytics.js";
+import { BUSINESS_CITY, BUSINESS_WHATSAPP_LINK, getOccasionPath } from "../../lib/site.js";
 
-export default function Hero({ setPage, total, newCount }) {
+export default function Hero({ total, newCount }) {
   return (
     <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden" }} className="hero-light">
       <div style={{ position: "absolute", top: "20%", left: "10%", width: 400, height: 400, borderRadius: "50%", background: "var(--pink)", opacity: 0.06, filter: "blur(80px)", pointerEvents: "none" }} />
@@ -9,6 +12,7 @@ export default function Hero({ setPage, total, newCount }) {
       <div style={{ position: "absolute", inset: 0, opacity: 0.04, backgroundImage: "radial-gradient(var(--pink) 1px,transparent 1px)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
 
       <div
+        className="hero-grid"
         style={{
           maxWidth: 1280,
           margin: "0 auto",
@@ -22,15 +26,15 @@ export default function Hero({ setPage, total, newCount }) {
           zIndex: 1,
         }}
       >
-        <div style={{ animation: "fadeUp .5s ease both" }}>
+        <div className="hero-copy" style={{ animation: "fadeUp .5s ease both" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
             <div style={{ height: 1, width: 40, background: "var(--pink)" }} />
             <span style={{ fontSize: 11, letterSpacing: ".22em", color: "var(--pink)", textTransform: "uppercase", fontFamily: "'DM Sans',sans-serif" }}>
               New Festive Collection 2025
             </span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 24 }}>
-            <img src={LOGO} alt="Yashvi Imitation" style={{ width: 80, height: 80, objectFit: "contain" }} />
+          <div className="hero-brand-row" style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 24 }}>
+            <img className="hero-logo" src={LOGO} alt="Yashvi Imitation" style={{ width: 80, height: 80, objectFit: "contain" }} />
             <div>
               <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(38px,5vw,64px)", fontWeight: 600, color: "var(--text)", lineHeight: 1.05, marginBottom: 6 }}>
                 Yashvi
@@ -44,26 +48,33 @@ export default function Hero({ setPage, total, newCount }) {
               </p>
             </div>
           </div>
-          <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.72, marginBottom: 32, maxWidth: 400, fontFamily: "'DM Sans',sans-serif" }}>
-            Discover our exquisite collection of handpicked kundan, polki &amp; temple jewellery crafted for every occasion — weddings, festive celebrations, and everyday elegance.
+          <p className="hero-description" style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.72, marginBottom: 32, maxWidth: 480, fontFamily: "'DM Sans',sans-serif" }}>
+            Discover bridal, festive and daily wear imitation jewellery from {BUSINESS_CITY}. Explore kundan, polki and temple-inspired designs with quick WhatsApp support and pan-India delivery.
           </p>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <button onClick={() => setPage("collection")} className="btn-primary" style={{ padding: "13px 30px", fontSize: 13, fontWeight: 600, letterSpacing: ".1em", textTransform: "uppercase", borderRadius: 2 }}>
+          <div className="hero-buttons" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <Link to="/collection" className="btn-primary hero-button" style={{ padding: "13px 30px", fontSize: 13, fontWeight: 600, letterSpacing: ".1em", textTransform: "uppercase", borderRadius: 2, textDecoration: "none", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
               Explore Collection
-            </button>
-            <a href={`https://wa.me/${WA}?text=Hi! Please share your latest catalogue.`} target="_blank" rel="noopener" className="btn-outline" style={{ padding: "12px 24px", fontSize: 13, letterSpacing: ".08em", textTransform: "uppercase", borderRadius: 2, display: "inline-flex", alignItems: "center", gap: 6 }}>
+            </Link>
+            <a
+              href={`${BUSINESS_WHATSAPP_LINK}?text=Hi! Please share your latest bridal and festive catalogue.`}
+              target="_blank"
+              rel="noopener"
+              className="btn-outline hero-button"
+              style={{ padding: "12px 24px", fontSize: 13, letterSpacing: ".08em", textTransform: "uppercase", borderRadius: 2, display: "inline-flex", alignItems: "center", gap: 6 }}
+              onClick={() => trackLead("whatsapp", { placement: "hero_catalogue" })}
+            >
               <WaIcon />
               View Catalogue
             </a>
-            <a href={IG} target="_blank" rel="noopener" className="btn-outline" style={{ padding: "12px 20px", fontSize: 13, letterSpacing: ".08em", textTransform: "uppercase", borderRadius: 2, display: "inline-flex", alignItems: "center", gap: 6 }}>
+            <a href={IG} target="_blank" rel="noopener" className="btn-outline hero-button" style={{ padding: "12px 20px", fontSize: 13, letterSpacing: ".08em", textTransform: "uppercase", borderRadius: 2, display: "inline-flex", alignItems: "center", gap: 6 }}>
               <IgIcon />
               Follow
             </a>
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 14, animation: "fadeUp .5s ease both .12s" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
+        <div className="hero-side" style={{ display: "flex", flexDirection: "column", gap: 14, animation: "fadeUp .5s ease both .12s" }}>
+          <div className="hero-stats" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
             {[{ n: `${total}+`, l: "Designs" }, { n: newCount, l: "New Arrivals" }, { n: "6", l: "Categories" }].map((stat) => (
               <div key={stat.l} style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 10, padding: "18px 16px", textAlign: "center", boxShadow: "var(--shadow-card)" }}>
                 <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 34, fontWeight: 400, color: "var(--pink)", lineHeight: 1 }}>{stat.n}</div>
@@ -71,10 +82,11 @@ export default function Hero({ setPage, total, newCount }) {
               </div>
             ))}
           </div>
-          {[{ i: "🪔", n: "Festive", d: "Kundan & polki designs" }, { i: "💒", n: "Bridal", d: "Complete wedding sets" }, { i: "🌸", n: "Daily Wear", d: "Elegant & lightweight" }].map((occasion, idx) => (
-            <button
+          {[{ key: "festive", i: "🪔", n: "Festive", d: "Kundan & polki designs" }, { key: "wedding", i: "💒", n: "Bridal", d: "Complete wedding sets" }, { key: "daily", i: "🌸", n: "Daily Wear", d: "Elegant & lightweight" }].map((occasion, idx) => (
+            <Link
+              className="hero-occasion-card"
               key={occasion.n}
-              onClick={() => setPage("occasions")}
+              to={getOccasionPath(occasion.key)}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -89,6 +101,7 @@ export default function Hero({ setPage, total, newCount }) {
                 boxShadow: "var(--shadow-card)",
                 animation: `fadeUp .5s ease both ${0.18 + idx * 0.07}s`,
                 fontFamily: "'DM Sans',sans-serif",
+                textDecoration: "none",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "var(--pink)";
@@ -107,7 +120,7 @@ export default function Hero({ setPage, total, newCount }) {
               <span style={{ color: "var(--text-muted)" }}>
                 <ChevronRight />
               </span>
-            </button>
+            </Link>
           ))}
         </div>
       </div>

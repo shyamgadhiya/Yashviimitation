@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
-import { IG, LOGO, WA } from "../../lib/config.js";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { IG, LOGO, MAP_URL } from "../../lib/config.js";
 import { CloseIcon, IgIcon, MenuIcon, WaIcon } from "../icons/index.jsx";
+import { trackLead } from "../../lib/analytics.js";
+import { BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_LINK, BUSINESS_WHATSAPP_LINK } from "../../lib/site.js";
 
-export default function Header({ page, setPage }) {
+export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 24);
@@ -12,10 +17,14 @@ export default function Header({ page, setPage }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
+
   const nav = [
-    { k: "home", l: "Home" },
-    { k: "collection", l: "Collection" },
-    { k: "occasions", l: "Occasions" },
+    { to: "/", label: "Home", match: (pathname) => pathname === "/" },
+    { to: "/collection", label: "Collection", match: (pathname) => pathname.startsWith("/collection") || pathname.startsWith("/category") || pathname.startsWith("/product") },
+    { to: "/occasion/wedding", label: "Bridal", match: (pathname) => pathname.startsWith("/occasion") },
   ];
 
   const hStyle = {
@@ -34,6 +43,7 @@ export default function Header({ page, setPage }) {
     <>
       <header style={hStyle}>
         <div
+          className="header-inner"
           style={{
             maxWidth: 1280,
             margin: "0 auto",
@@ -45,13 +55,11 @@ export default function Header({ page, setPage }) {
             gap: 12,
           }}
         >
-          <button
-            onClick={() => setPage("home")}
-            style={{ display: "flex", alignItems: "center", gap: 12, background: "none", border: "none", cursor: "pointer" }}
-          >
-            <img src={LOGO} alt="Yashvi Imitation" style={{ width: 46, height: 46, objectFit: "contain", display: "block" }} />
-            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
+          <Link className="header-brand" to="/" style={{ display: "flex", alignItems: "center", gap: 12, background: "none", border: "none", cursor: "pointer", textDecoration: "none" }}>
+            <img className="header-logo" src={LOGO} alt="Yashvi Imitation" style={{ width: 46, height: 46, objectFit: "contain", display: "block" }} />
+            <div className="brand-copy" style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
               <span
+                className="brand-title"
                 style={{
                   fontFamily: "'Playfair Display',serif",
                   fontSize: 17,
@@ -62,85 +70,101 @@ export default function Header({ page, setPage }) {
               >
                 Yashvi Imitation
               </span>
-              <span style={{ fontSize: 9.5, letterSpacing: ".18em", color: "var(--pink)", textTransform: "uppercase" }}>
+              <span className="brand-tagline" style={{ fontSize: 9.5, letterSpacing: ".18em", color: "var(--pink)", textTransform: "uppercase" }}>
                 House of Antique Jewellery
               </span>
             </div>
-          </button>
+          </Link>
 
-          <nav style={{ display: "flex", gap: 32, alignItems: "center" }}>
+          <nav className="desktop-nav" style={{ display: "flex", gap: 32, alignItems: "center" }}>
             {nav.map((item) => (
-              <button
-                key={item.k}
-                onClick={() => setPage(item.k)}
+              <NavLink
+                key={item.to}
+                to={item.to}
                 style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
                   fontFamily: "'DM Sans',sans-serif",
                   fontSize: 12,
                   letterSpacing: ".1em",
                   textTransform: "uppercase",
-                  color: page === item.k ? "var(--pink)" : "var(--text-muted)",
+                  color: item.match(location.pathname) ? "var(--pink)" : "var(--text-muted)",
                   transition: "color .2s",
+                  textDecoration: "none",
                 }}
               >
-                {item.l}
-              </button>
+                {item.label}
+              </NavLink>
             ))}
           </nav>
 
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <a
-              href={IG}
-              target="_blank"
-              rel="noopener"
-              style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--text-muted)", padding: "6px 10px", transition: "color .2s" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "var(--pink)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "var(--text-muted)";
-              }}
-            >
-              <IgIcon />
-              <span className="sm-inline" style={{ fontSize: 12, letterSpacing: ".06em" }}>
-                Instagram
-              </span>
-            </a>
-            <a
-              href={`https://wa.me/${WA}?text=Hi! I would like to enquire about your jewellery.`}
-              target="_blank"
-              rel="noopener"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                background: "#25D366",
-                color: "#fff",
-                borderRadius: 999,
-                padding: "7px 14px",
-                fontSize: 12,
-                fontWeight: 500,
-                fontFamily: "'DM Sans',sans-serif",
-                transition: "all .18s",
-                textDecoration: "none",
-              }}
-            >
-              <WaIcon />
-              <span className="sm-inline">WhatsApp</span>
-            </a>
-            {page === "admin" ? (
-              <button onClick={() => setPage("home")} className="btn-outline" style={{ borderRadius: 999, padding: "6px 14px", fontSize: 12, letterSpacing: ".06em" }}>
-                ← Store
-              </button>
+          <div className="header-actions" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            {!isAdminRoute ? (
+              <>
+                <a
+                  className="header-social"
+                  href={IG}
+                  target="_blank"
+                  rel="noopener"
+                  style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--text-muted)", padding: "6px 10px", transition: "color .2s" }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "var(--pink)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "var(--text-muted)";
+                  }}
+                >
+                  <IgIcon />
+                  <span className="sm-inline" style={{ fontSize: 12, letterSpacing: ".06em" }}>
+                    Instagram
+                  </span>
+                </a>
+                <a
+                  className="header-call"
+                  href={BUSINESS_PHONE_LINK}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    color: "var(--text-muted)",
+                    padding: "6px 10px",
+                    transition: "color .2s",
+                    textDecoration: "none",
+                  }}
+                  onClick={() => trackLead("call", { placement: "header" })}
+                >
+                  ☎ <span className="sm-inline">{BUSINESS_PHONE_DISPLAY}</span>
+                </a>
+                <a
+                  className="header-whatsapp"
+                  href={`${BUSINESS_WHATSAPP_LINK}?text=Hi! I would like to enquire about your jewellery.`}
+                  target="_blank"
+                  rel="noopener"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    background: "#25D366",
+                    color: "#fff",
+                    borderRadius: 999,
+                    padding: "7px 14px",
+                    fontSize: 12,
+                    fontWeight: 500,
+                    fontFamily: "'DM Sans',sans-serif",
+                    transition: "all .18s",
+                    textDecoration: "none",
+                  }}
+                  onClick={() => trackLead("whatsapp", { placement: "header" })}
+                >
+                  <WaIcon />
+                  <span className="sm-inline">WhatsApp</span>
+                </a>
+              </>
             ) : (
-              <button onClick={() => setPage("admin")} className="btn-outline" style={{ borderRadius: 999, padding: "6px 14px", fontSize: 12, letterSpacing: ".06em" }}>
-                ⚙ Admin
-              </button>
+              <Link to="/" className="btn-outline header-admin" style={{ borderRadius: 999, padding: "6px 14px", fontSize: 12, letterSpacing: ".06em", textDecoration: "none" }}>
+                ← Store
+              </Link>
             )}
             <button
-              className="btn-outline"
+              className="btn-outline menu-toggle"
               style={{ borderRadius: 999, padding: "6px 8px", display: "flex", alignItems: "center", justifyContent: "center" }}
               onClick={() => setOpen((value) => !value)}
             >
@@ -149,14 +173,11 @@ export default function Header({ page, setPage }) {
           </div>
         </div>
         {open && (
-          <div style={{ background: "var(--bg-card)", borderTop: "1px solid var(--border)", animation: "slideDown .25s ease both" }}>
+          <div className="mobile-menu-panel" style={{ background: "var(--bg-card)", borderTop: "1px solid var(--border)", animation: "slideDown .25s ease both" }}>
             {nav.map((item) => (
-              <button
-                key={item.k}
-                onClick={() => {
-                  setPage(item.k);
-                  setOpen(false);
-                }}
+              <Link
+                key={item.to}
+                to={item.to}
                 style={{
                   display: "block",
                   width: "100%",
@@ -169,30 +190,126 @@ export default function Header({ page, setPage }) {
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  color: page === item.k ? "var(--pink)" : "var(--text-muted)",
+                  color: item.match(location.pathname) ? "var(--pink)" : "var(--text-muted)",
                   borderBottom: "1px solid var(--border-soft)",
+                  textDecoration: "none",
                 }}
               >
-                {item.l}
-              </button>
+                {item.label}
+              </Link>
             ))}
-            <a
-              href={IG}
-              target="_blank"
-              rel="noopener"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "14px 24px",
-                fontFamily: "'DM Sans',sans-serif",
-                fontSize: 13,
-                color: "var(--text-muted)",
-                borderBottom: "1px solid var(--border-soft)",
-              }}
-            >
-              <IgIcon /> @yashvi_imitation_
-            </a>
+            {!isAdminRoute ? (
+              <>
+                <a
+                  href={`${BUSINESS_WHATSAPP_LINK}?text=Hi! I would like to enquire about your jewellery.`}
+                  target="_blank"
+                  rel="noopener"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "14px 24px",
+                    fontFamily: "'DM Sans',sans-serif",
+                    fontSize: 13,
+                    color: "var(--text-muted)",
+                    borderBottom: "1px solid var(--border-soft)",
+                  }}
+                  onClick={() => trackLead("whatsapp", { placement: "mobile_menu" })}
+                >
+                  <WaIcon /> WhatsApp
+                </a>
+                <a
+                  href={BUSINESS_PHONE_LINK}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "14px 24px",
+                    fontFamily: "'DM Sans',sans-serif",
+                    fontSize: 13,
+                    color: "var(--text-muted)",
+                    borderBottom: "1px solid var(--border-soft)",
+                    textDecoration: "none",
+                  }}
+                  onClick={() => trackLead("call", { placement: "mobile_menu" })}
+                >
+                  ☎ Call Now
+                </a>
+                <a
+                  href={MAP_URL}
+                  target="_blank"
+                  rel="noopener"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "14px 24px",
+                    fontFamily: "'DM Sans',sans-serif",
+                    fontSize: 13,
+                    color: "var(--text-muted)",
+                    borderBottom: "1px solid var(--border-soft)",
+                  }}
+                  onClick={() => trackLead("visit_map", { placement: "mobile_menu" })}
+                >
+                  📍 Visit Store
+                </a>
+                <a
+                  href={IG}
+                  target="_blank"
+                  rel="noopener"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "14px 24px",
+                    fontFamily: "'DM Sans',sans-serif",
+                    fontSize: 13,
+                    color: "var(--text-muted)",
+                    borderBottom: "1px solid var(--border-soft)",
+                  }}
+                >
+                  <IgIcon /> @yashvi_imitation_
+                </a>
+                <Link
+                  to="/admin"
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    textAlign: "left",
+                    padding: "14px 24px",
+                    fontFamily: "'DM Sans',sans-serif",
+                    fontSize: 13,
+                    letterSpacing: ".1em",
+                    textTransform: "uppercase",
+                    color: "var(--text-muted)",
+                    textDecoration: "none",
+                  }}
+                >
+                  Staff Login
+                </Link>
+              </>
+            ) : (
+              <Link
+                to="/"
+                style={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  padding: "14px 24px",
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: 13,
+                  letterSpacing: ".1em",
+                  textTransform: "uppercase",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "var(--text-muted)",
+                  textDecoration: "none",
+                }}
+              >
+                ← Store
+              </Link>
+            )}
           </div>
         )}
       </header>

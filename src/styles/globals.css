@@ -58,6 +58,7 @@ body {
   color: var(--text);
   transition: background 0.25s, color 0.25s;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 a {
@@ -370,8 +371,196 @@ html.dark .btn-danger:hover {
   display: none;
 }
 
+.mobile-lead-bar {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 450;
+  display: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+}
+
+.mobile-lead-bar a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 11px;
+  text-decoration: none;
+  text-align: center;
+}
+
 @media (min-width: 640px) {
   .sm-inline {
     display: inline;
+  }
+}
+
+@media (max-width: 900px) {
+  .header-inner {
+    padding: 0 1rem !important;
+    height: 64px !important;
+  }
+
+  .header-brand {
+    gap: 10px !important;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .header-logo {
+    width: 38px !important;
+    height: 38px !important;
+    flex-shrink: 0;
+  }
+
+  .brand-copy {
+    min-width: 0;
+  }
+
+  .brand-title {
+    font-size: 15px !important;
+    line-height: 1.05 !important;
+  }
+
+  .brand-tagline {
+    font-size: 8px !important;
+    letter-spacing: 0.12em !important;
+    line-height: 1.15 !important;
+  }
+
+  .desktop-nav,
+  .header-social,
+  .header-call,
+  .header-whatsapp,
+  .header-admin {
+    display: none !important;
+  }
+
+  .header-actions {
+    gap: 6px !important;
+    flex-shrink: 0;
+  }
+
+  .menu-toggle {
+    padding: 7px 10px !important;
+  }
+
+  .mobile-menu-panel {
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    padding: 96px 1rem 48px !important;
+  }
+
+  .hero-brand-row {
+    gap: 14px !important;
+    align-items: flex-start !important;
+  }
+
+  .hero-logo {
+    width: 64px !important;
+    height: 64px !important;
+    flex-shrink: 0;
+  }
+
+  .hero-description {
+    max-width: none !important;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .page-shell {
+    padding: 0 1rem !important;
+  }
+
+  .collection-search-wrap {
+    width: 100%;
+  }
+
+  .collection-search-input {
+    width: 100% !important;
+  }
+
+  .trust-grid,
+  .footer-grid,
+  .local-seo-grid,
+  .product-page-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    padding-bottom: 86px;
+  }
+
+  .theme-toggle {
+    width: 42px;
+    height: 42px;
+    right: 16px;
+    bottom: 92px;
+    font-size: 18px;
+  }
+
+  .hero-grid {
+    padding-top: 88px !important;
+  }
+
+  .hero-brand-row {
+    gap: 12px !important;
+  }
+
+  .hero-logo {
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  .hero-description {
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+  }
+
+  .hero-stats {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-occasion-card {
+    padding: 12px 14px !important;
+  }
+
+  .collection-header h1 {
+    font-size: 36px !important;
+  }
+
+  .mobile-lead-bar {
+    display: grid;
   }
 }

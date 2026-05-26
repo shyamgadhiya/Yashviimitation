@@ -1,10 +1,14 @@
-import { CAT_ICONS, WA } from "../../lib/config.js";
+import { Link } from "react-router-dom";
+import { CAT_ICONS } from "../../lib/config.js";
 import { WaIcon } from "../../components/icons/index.jsx";
+import { trackLead } from "../../lib/analytics.js";
+import { buildProductEnquiryMessage, buildWhatsAppLink, getProductPath } from "../../lib/site.js";
 
 export default function ProductCard({ product, delay = 0 }) {
   const slug = product.categories?.slug || "default";
   const icon = CAT_ICONS[slug] || CAT_ICONS.default;
-  const waMsg = encodeURIComponent(`Hi! I am interested in "${product.name}" priced at ₹${product.price}. Is it available?`);
+  const productPath = getProductPath(product);
+  const whatsappLink = buildWhatsAppLink(buildProductEnquiryMessage(product));
 
   return (
     <div
@@ -20,7 +24,7 @@ export default function ProductCard({ product, delay = 0 }) {
         animationDelay: `${delay}s`,
       }}
     >
-      <div style={{ aspectRatio: "1/1", overflow: "hidden", position: "relative", background: "var(--bg-mid)" }}>
+      <Link to={productPath} aria-label={`View details for ${product.name}`} style={{ display: "block", aspectRatio: "1/1", overflow: "hidden", position: "relative", background: "var(--bg-mid)" }}>
         {product.image_url ? (
           <img
             src={product.image_url}
@@ -64,14 +68,14 @@ export default function ProductCard({ product, delay = 0 }) {
             </span>
           </div>
         )}
-      </div>
+      </Link>
       <div style={{ padding: "14px 16px 16px" }}>
         <div style={{ fontSize: 10, color: "var(--pink)", letterSpacing: ".15em", textTransform: "uppercase", marginBottom: 5 }}>
           {product.categories?.name || "Jewellery"}
         </div>
-        <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 17, fontWeight: 500, color: "var(--text)", lineHeight: 1.25, marginBottom: 6 }}>
+        <Link to={productPath} style={{ display: "block", fontFamily: "'Playfair Display',serif", fontSize: 17, fontWeight: 500, color: "var(--text)", lineHeight: 1.25, marginBottom: 6 }}>
           {product.name}
-        </div>
+        </Link>
         {product.description && (
           <p
             style={{
@@ -88,41 +92,47 @@ export default function ProductCard({ product, delay = 0 }) {
             {product.description}
           </p>
         )}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 12, borderTop: "1px solid var(--border-soft)", marginTop: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, paddingTop: 12, borderTop: "1px solid var(--border-soft)", marginTop: 10 }}>
           <span style={{ fontFamily: "'Playfair Display',serif", fontSize: 20, fontWeight: 500, color: "var(--text)" }}>
             ₹{Number(product.price).toLocaleString("en-IN")}
           </span>
           {!product.is_sold_out ? (
-            <a
-              href={`https://wa.me/${WA}?text=${waMsg}`}
-              target="_blank"
-              rel="noopener"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                background: "#25D366",
-                color: "#fff",
-                borderRadius: 999,
-                padding: "7px 14px",
-                fontSize: 11,
-                fontWeight: 500,
-                fontFamily: "'DM Sans',sans-serif",
-                transition: "all .18s",
-                textDecoration: "none",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#1ebe5d";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#25D366";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              <WaIcon />
-              Enquire
-            </a>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
+              <Link to={productPath} className="btn-outline" style={{ padding: "7px 12px", fontSize: 11, borderRadius: 999 }}>
+                Details
+              </Link>
+              <a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  background: "#25D366",
+                  color: "#fff",
+                  borderRadius: 999,
+                  padding: "7px 14px",
+                  fontSize: 11,
+                  fontWeight: 500,
+                  fontFamily: "'DM Sans',sans-serif",
+                  transition: "all .18s",
+                  textDecoration: "none",
+                }}
+                onClick={() => trackLead("whatsapp", { placement: "product_card", product_id: String(product.id), product_name: product.name })}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#1ebe5d";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#25D366";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                <WaIcon />
+                Enquire
+              </a>
+            </div>
           ) : (
             <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Unavailable</span>
           )}

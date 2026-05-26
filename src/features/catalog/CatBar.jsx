@@ -1,14 +1,15 @@
+import { Link } from "react-router-dom";
 import { CAT_ICONS } from "../../lib/config.js";
 
-export default function CatBar({ cats, active, onChange }) {
+export default function CatBar({ cats, active, buildHref }) {
   return (
     <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4 }} className="noscroll">
       {[{ id: "all", name: "All", slug: "all" }, ...cats].map((category) => {
         const on = active === category.slug || active === category.id;
         return (
-          <button
+          <Link
             key={category.id}
-            onClick={() => onChange(category.slug || "all")}
+            to={buildHref(category.slug || "all")}
             style={{
               flexShrink: 0,
               display: "flex",
@@ -25,11 +26,12 @@ export default function CatBar({ cats, active, onChange }) {
               background: on ? "var(--pink)" : "var(--bg-card)",
               color: on ? "#fff" : "var(--text-muted)",
               border: `1px solid ${on ? "var(--pink)" : "var(--border)"}`,
+              textDecoration: "none",
             }}
           >
             {category.slug && category.slug !== "all" ? `${CAT_ICONS[category.slug] || "💎"} ` : ""}
             {category.name}
-          </button>
+          </Link>
         );
       })}
     </div>
